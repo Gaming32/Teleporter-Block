@@ -53,19 +53,29 @@ public class TeleporterBlockMain {
         int count = 0;
         CodeSource src = TeleporterBlockMain.class.getProtectionDomain().getCodeSource();
         if (src == null) {
-            System.err.println("Failed to extract resources");
+            System.err.println("Failed to extract resource pack");
             return -1;
         }
+
         URL jarFile = src.getLocation();
         ZipInputStream zipFile = new ZipInputStream(jarFile.openStream());
+
         while (true) {
             ZipEntry entry = zipFile.getNextEntry();
             if (entry == null) break;
             if (entry.isDirectory()) continue;
             String name = entry.getName();
 
-            if (name.startsWith("resources/")) {
-                String dirName = name.substring(10);
+            switch (name) {
+                case "pack.mcmeta":
+                case "pack.png":
+                    extractSingle(resourcesDir, name);
+                    count++;
+                    continue;
+            }
+
+            if (name.startsWith("assets/")) {
+                String dirName = name.substring(7);
                 int lastSlash = dirName.lastIndexOf("/");
                 File dir = resourcesDir;
                 if (lastSlash != -1) {
@@ -74,15 +84,20 @@ public class TeleporterBlockMain {
                     dir.mkdirs();
                 }
 
-                String baseName = name.substring(name.lastIndexOf("/"));
-                File dest = new File(dir, baseName);
-                InputStream stream = TeleporterBlockMain.class.getResourceAsStream("/" + name);
-                Files.copy(stream, dest.toPath(), StandardCopyOption.REPLACE_EXISTING);
-
-                System.out.println("Extracted " + name);
+                extractSingle(dir, name);
                 count++;
             }
         }
         return count;
+    }
+
+    private static void extractSingle(File dir, String name) throws IOException {
+        int lastSlash = name.lastIndexOf("/");
+        String baseName = lastSlash == -1 ? name : name.substring(lastSlash);
+        File dest = new File(dir, baseName);
+        InputStream stream = TeleporterBlockMain.class.getResourceAsStream("/" + name);
+        Files.copy(stream, dest.toPath(), StandardCopyOption.REPLACE_EXISTING);
+
+        System.out.println("Extracted " + name);
     }
 }
