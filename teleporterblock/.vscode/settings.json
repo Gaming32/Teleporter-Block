@@ -1,0 +1,6 @@
+{
+    "yaml.schemas": {
+        "https://json.schemastore.org/bukkit-plugin": "plugin.yml"
+    },
+    "java.configuration.updateBuildConfiguration": "interactive"
+}

@@ -1,0 +1,13 @@
+{
+	"parent": "minecraft:block/cube_column",
+	"textures": {
+		"end": "custom/teleporter_block_ends",
+		"side": "custom/teleporter_block_side"
+	},
+	"display": {
+		"head": {
+			"translation": [-18.25, -14.75, -18.25],
+			"scale": [2.3, 2.3, 2.3]
+		}
+	}
+}

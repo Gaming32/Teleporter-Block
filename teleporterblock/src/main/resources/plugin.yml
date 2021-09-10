@@ -1,0 +1,4 @@
+name: TeleporterBlock
+main: com.jemnetworks.teleporterblock.TeleporterBlockPlugin
+version: ${project.version}
+api-version: 1.17
